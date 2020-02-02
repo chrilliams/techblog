@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: "/techblog",
   siteMetadata: {
     title: `Technical Blog`,
     description: `This is my coding blog where I write about my cloud journey.`,
