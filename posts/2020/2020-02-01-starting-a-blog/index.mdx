@@ -1,0 +1,62 @@
+---
+title: Tech blog site
+date: 2020-02-01
+published: true
+---
+
+## The start of it all
+
+I spend a lot of time 'playing' with tech and try to learn as much a possible.  The idea of the blog is to help me
+remember usual tech bits that I have learnt.  After a few busy days in work its very difficult to recall 
+the fun stuff I was looking at.  I also hope that anyone reading this will also find it useful.
+
+### so that led me to looking at blog sites
+
+Wanting to learn while maintaining a blog site was important.  I also wanted to focus on the same dev stack that I 
+had been using in work; so a blog site using npm, node, react was something I was looking for.  I came across 
+[gatsbyjs](https://www.gatsbyjs.org/) and decided to play.
+
+There were many tutorials for creating a blogging site, but it was always based on a couple of commands from someone
+else's theme without really understand how I could evolve it myself.  Until I came across
+[Scott Spence](https://scottspence.me/) post on
+[freecodecamp](https://www.freecodecamp.org/news/build-a-developer-blog-from-scratch-with-gatsby-and-mdx/).  It started
+from nothing that with lots of explanation.  Thanks Scott.
+
+I might change to a ready made template, but I feel that spending time really understanding whats running a blog site would
+be beneficial. 
+
+Features
+code snippets with a copy functionality:
+
+```jsx
+import React from 'react';
+
+const Dump = props => (
+  <div
+    style={{
+      fontSize: 20,
+      border: '1px solid #efefef',
+      padding: 10,
+      background: 'white',
+    }}>
+    {Object.entries(props).map(([key, val]) => (
+      <pre key={key}>
+        <strong style={{ color: 'white', background: 'red' }}>
+          {key} 💩
+        </strong>
+        {JSON.stringify(val, '', ' ')}
+      </pre>
+    ))}
+  </div>
+);
+
+export default Dump;
+```
+
+Live code:
+
+```jsx react-live
+
+render ('some text');
+
+```

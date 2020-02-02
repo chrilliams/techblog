@@ -1,0 +1,44 @@
+---
+title: Deploying a tech blog site
+date: 2020-02-02
+published: true
+---
+
+There are many way to host a static page live, and I have tried a number in the past.  There are great services
+like Netlify, a S3 bucket, or AWS Amplify.  I wanted something that cause be quickly deployed from a github repo and 
+ghpages had be mentioned for blog sites, plus its completely free.
+
+### Github Pages
+GitHub Pages is a static site hosting service that takes HTML, CSS, and JavaScript files straight from a repository on GitHub,
+optionally runs the files through a build process, and publishes a website.
+
+You can host your site on GitHub's github.io domain or your own custom domain.
+
+> if you haven't already, create a github project and push your code
+
+#### Configuring the GitHub Pages source branch
+You must select which branch will be deployed from your repository settings in GitHub for GitHub Pages to function. On GitHub:
+
+1. Navigate to your site’s repository.
+1. Under the repository name, click Settings.
+1. In the GitHub Pages section, use the Source drop-down to select master (for publishing to the root subdomain) or gh-pages (for publishing to a path like /docs) as your GitHub Pages publishing source.
+1. Click Save.
+
+#### Installing the gh-pages package
+The easiest way to push a Gatsby app to GitHub Pages is by using a package called gh-pages.
+
+``` shell
+npm install gh-pages --save-dev
+```
+Then add a deploy script to package.json in your repository’s codebase:
+
+``` json
+{
+  "scripts": {
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
+  }
+}
+```
+
+Assuming that github was expecting the generated 'public' folder in source control. I was wrong.  Running ```gh-pages````
+created a pull request called gh-pages
