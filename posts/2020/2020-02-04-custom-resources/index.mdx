@@ -1,0 +1,78 @@
+---
+title: Cloudformation custom resources taking hours to timeout
+date: 2020-02-04
+published: true
+---
+
+I have spent ages during development waiting for cloudformation stacks to timeout because my code has errored,
+and so a response is never sent.  Very often I create a whole new stack with the serverless framework.
+
+### What is a custom resource?
+In a CloudFormation template, you use the AWS::CloudFormation::CustomResource or Custom::String resource type to 
+specify custom resources.
+
+Custom resources provide a way for you to write custom provisioning logic in CloudFormation template and 
+have CloudFormation run it during a stack operation, such as when you create, update or delete a stack. 
+For more information, 
+see [Custom Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html).
+
+### Watchdogs
+> A watchdog timer (sometimes called a computer operating properly or COP timer, or simply a watchdog) is an electronic timer 
+that is used to detect and recover from computer malfunctions. During normal operation, the computer regularly resets the 
+atchdog timer to prevent it from elapsing, or "timing out". If, due to a hardware fault or program error, the computer
+fails to reset the watchdog, the timer will elapse and generate a timeout signal. The timeout signal is used to 
+initiate corrective action or actions. The corrective actions typically include placing the computer system in a safe state 
+and restoring normal system operation.
+>> https://en.wikipedia.org/wiki/Watchdog_timer
+
+### When to timeout?
+
+Within a Lambda's context you have access to context.getRemainingTimeInMillis(), which returns the number of milliseconds left before
+the execution times out.  This is great because we can timeout and send a response to AWS Cloudformation before the execution timeout.
+
+#### Example Function
+``` js
+'use strict';
+const response = require('cfn-response-promise')
+
+const handler = async function(event, context) {
+  // Install watchdog timer as the first thing
+  setupWatchdogTimer(event, context)
+  console.log('REQUEST RECEIVED:\n' + JSON.stringify(event))
+  if (event.RequestType === 'Create') {
+    console.log('CREATE!')
+    // Put your custom create logic here
+    await response.send(event, context, response.SUCCESS, { 'Message': 'Resource creation successful!' });
+
+  } else if (event.RequestType === 'Update') {
+    console.log('UDPATE!')
+    // Put your custom update logic here
+    await response.send(event, context, response.SUCCESS, { 'Message': 'Resource update successful!' });
+
+  } else if (event.RequestType === 'Delete') {
+    console.log('DELETE!')
+    // Put your custom delete logic here
+    await response.send(event, context, response.SUCCESS, { 'Message': 'Resource deletion successful!'});
+
+  } else {
+    console.log('FAILED!')
+    await response.send(event, context, response.FAILED);
+  }
+  return await response.send(event, context, response.SUCCESS);
+
+};
+
+function setupWatchdogTimer (event, context) {
+  const timeoutHandler = () => {
+    console.log('Timeout FAILURE!')
+    // Emit event to 'sendResponse', then callback with an error from this
+    // function
+    return await response.send(event, context, response.SUCCESS, returnData);
+  }
+
+  // Set timer so it triggers one second before this function would timeout
+  setTimeout(timeoutHandler, context.getRemainingTimeInMillis() - 1000)
+}
+
+module.exports.handler = handler;
+```

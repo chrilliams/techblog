@@ -43,12 +43,14 @@ Then add a deploy script to package.json in your repository’s codebase:
 Assuming that github was expecting the generated 'public' folder in source control. I was wrong.
 
 Running 
+
 ``` shell
   npm run deploy
 ```
 created another branch called 'gh-pages' and updated the Github Pages source branch in the settings mentioned above.
 
-It great that we don't have to worry about how the deployment works, and the site is running at https://chrilliams.github.io/techblog/
+It great that the deploy just works; the build happens on the laptop and the public folder is uploaded to the gh-pages branch.
+The site is running at https://chrilliams.github.io/techblog/
 
 If this doesn't work, deployment information is available via environments in the github repo.
 
