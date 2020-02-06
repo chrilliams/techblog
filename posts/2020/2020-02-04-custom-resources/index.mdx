@@ -76,3 +76,18 @@ function setupWatchdogTimer (event, context) {
 
 module.exports.handler = handler;
 ```
+
+### Cloudformation runs delete after an amend
+
+A very interesting and important thing to know is that CloudFormation compares the physical resource id you returned
+by your Lambda function to the one you returned previously. If the IDs are different, CloudFormation assumes the
+resource has been replaced with a new resource. Then something interesting happens.
+
+When the resource update logic completes successfully, a Delete request is sent with the old physical resource id. 
+If the stack update fails and a rollback occurs, the new physical resource id is sent in the Delete event.
+
+If you don't want this to happen its important to use the RESOURCEID carefully.
+
+``` nodejs
+    await response.send(event, context, response.SUCCESS, { 'Message': 'Resource deletion successful!'}, RESOURCEID);
+```
