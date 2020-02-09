@@ -47,6 +47,6 @@
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
-    "*.{js,css,md,mdx}": "prettier --write --print-width 100"
+    "*.{js,css,md,mdx}": "prettier --write"
   }
 }
