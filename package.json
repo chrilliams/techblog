@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "gatsby develop -p 9988 -o",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
+    "prettier": "prettier --insert-pragma posts/2020/2020-02-09-local-git-hooks/index.mdx"
   },
   "author": "Chris Williams",
   "license": "ISC",
@@ -25,10 +26,17 @@
     "styled-components": "^5.0.0"
   },
   "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "gh-pages": "^2.2.0",
     "husky": "^4.2.1",
-    "lint-staged": "^10.0.7",
-    "prettier": "^1.19.1"
+    "lint-staged": "^10.0.7"
   },
   "husky": {
     "hooks": {
@@ -36,6 +44,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md,mdx}": "prettier --write"
+    "[*.js,*.ms]": "eslint --cache --fix"
   }
 }
