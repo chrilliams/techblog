@@ -36,19 +36,24 @@ This will automatically to you package.json for you.
   }
 ```
 
-> you need to have eslint and/or prettier installed 
+> you need to have eslint and/or prettier installed
 > `npx install-peerdeps --dev eslint-config-airbnb` - airbnb is the gold standard of javascript linting rules
-> `npm install -D eslint-config-prettier eslint-plugin-prettier` 
+> `npm install -D eslint-config-prettier eslint-plugin-prettier`
 > Create .eslintrc.json file in your project’s root directory:
-> ``` 
-{
-  "extends": ["airbnb", "prettier"],
-  "plugins": ["prettier"],
-  "rules": {
+>
+> ```
+> {
+>   "extends": ["airbnb", "prettier"],
+>   "plugins": ["prettier"],
+>   "rules": {
+> ```
+
     "prettier/prettier": ["error"]
-  }
+
 }
-```
+}
+
+````
 > before running the above commands. It will then set up your package.json for you :)
 
 ### Commit code
@@ -64,4 +69,4 @@ husky > pre-commit (node v12.13.1)
   ✔ Cleaning up...
 [master 4080f84] staged-lint
  5 files changed, 57 insertions(+), 50 deletions(-)
-```
+````
