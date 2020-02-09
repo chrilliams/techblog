@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "gatsby develop -p 9988 -o",
-    "lint": "prettier posts/2020/*",
     "deploy": "gatsby build --prefix-paths && gh-pages -d public"
   },
   "author": "Chris Williams",
@@ -45,7 +44,7 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint --cache ",
+    "*.js": "eslint --cache --fix",
     "*.{js,css,md,mdx}": "prettier --write"
   }
 }
