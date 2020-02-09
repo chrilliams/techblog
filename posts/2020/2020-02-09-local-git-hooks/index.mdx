@@ -1,0 +1,37 @@
+---
+title: Using linters against staged git files
+date: 2020-02-09
+published: true
+---
+
+After annoying myself many many times what a build fails on a CI server went there are simple linting failures, I decided to do a bit of research to see if it could be automated for staged files before commit.
+
+I've been using `prettier` in Visual Code Studio for some time and liked it, but it does rely on every developer within the project setting things up.
+
+## pre-commit checks
+Pre-commit checks run after staging your changes and running git commit and before a commit is completed. If the checks fail then the commit is not made and an error shown, while if all checks pass the commit is made as normal.
+
+## lint-stage
+
+Then I found [lint-stage](https://github.com/okonet/lint-staged), which seem to be exactly what I wanted.
+
+### Setup
+
+running:
+``` npx mrm lint-staged ```
+
+is the quickest way to get it running. This will install husky and lint-staged, then add a configuration to the project’s package.json that will automatically format supported files in a pre-commit hook.
+
+This will automatically to you package.json for you.
+``` json
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
+  }
+```
+> you need to have prettier installed `npm install --save-dev prettier` before running the above commands.  It will then set up your package.json for you :)
+

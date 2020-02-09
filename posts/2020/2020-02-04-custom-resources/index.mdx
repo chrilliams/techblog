@@ -67,8 +67,8 @@ function setupWatchdogTimer (event, context) {
     console.log('Timeout FAILURE!')
     // Emit event to 'sendResponse', then callback with an error from this
     // function
-    return await response.send(event, context, response.SUCCESS, returnData);
-  }
+    return await response.send(event, context, response.SUCCESS);
+  } 
 
   // Set timer so it triggers one second before this function would timeout
   setTimeout(timeoutHandler, context.getRemainingTimeInMillis() - 1000)
