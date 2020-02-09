@@ -37,3 +37,18 @@ This will automatically to you package.json for you.
 ```
 
 > you need to have prettier installed `npm install --save-dev prettier` before running the above commands. It will then set up your package.json for you :)
+
+### commit code
+
+When commiting code the hook with automatically run and fix any linting errors
+
+```sh
+xxx@xxx techblog % git commit -m "staged-lint"
+husky > pre-commit (node v12.13.1)
+  ✔ Preparing...
+  ✔ Running tasks...
+  ✔ Applying modifications...
+  ✔ Cleaning up...
+[master 4080f84] staged-lint
+ 5 files changed, 57 insertions(+), 50 deletions(-)
+```
