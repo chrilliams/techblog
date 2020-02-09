@@ -5,33 +5,37 @@ published: true
 ---
 
 I have spent ages during development waiting for cloudformation stacks to timeout because my code has errored,
-and so a response is never sent.  Very often I create a whole new stack with the serverless framework.
+and so a response is never sent. Very often I create a whole new stack with the serverless framework.
 
 ### What is a custom resource?
-In a CloudFormation template, you use the AWS::CloudFormation::CustomResource or Custom::String resource type to 
+
+In a CloudFormation template, you use the AWS::CloudFormation::CustomResource or Custom::String resource type to
 specify custom resources.
 
-Custom resources provide a way for you to write custom provisioning logic in CloudFormation template and 
-have CloudFormation run it during a stack operation, such as when you create, update or delete a stack. 
-For more information, 
+Custom resources provide a way for you to write custom provisioning logic in CloudFormation template and
+have CloudFormation run it during a stack operation, such as when you create, update or delete a stack.
+For more information,
 see [Custom Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html).
 
 ### Watchdogs
-> A watchdog timer (sometimes called a computer operating properly or COP timer, or simply a watchdog) is an electronic timer 
-that is used to detect and recover from computer malfunctions. During normal operation, the computer regularly resets the 
-atchdog timer to prevent it from elapsing, or "timing out". If, due to a hardware fault or program error, the computer
-fails to reset the watchdog, the timer will elapse and generate a timeout signal. The timeout signal is used to 
-initiate corrective action or actions. The corrective actions typically include placing the computer system in a safe state 
-and restoring normal system operation.
->> https://en.wikipedia.org/wiki/Watchdog_timer
+
+> A watchdog timer (sometimes called a computer operating properly or COP timer, or simply a watchdog) is an electronic timer
+> that is used to detect and recover from computer malfunctions. During normal operation, the computer regularly resets the
+> atchdog timer to prevent it from elapsing, or "timing out". If, due to a hardware fault or program error, the computer
+> fails to reset the watchdog, the timer will elapse and generate a timeout signal. The timeout signal is used to
+> initiate corrective action or actions. The corrective actions typically include placing the computer system in a safe state
+> and restoring normal system operation.
+>
+> > https://en.wikipedia.org/wiki/Watchdog_timer
 
 ### When to timeout?
 
 Within a Lambda's context you have access to context.getRemainingTimeInMillis(), which returns the number of milliseconds left before
-the execution times out.  This is great because we can timeout and send a response to AWS Cloudformation before the execution timeout.
+the execution times out. This is great because we can timeout and send a response to AWS Cloudformation before the execution timeout.
 
 #### Example Function
-``` js
+
+```js
 'use strict';
 const response = require('cfn-response-promise')
 
@@ -68,7 +72,7 @@ function setupWatchdogTimer (event, context) {
     // Emit event to 'sendResponse', then callback with an error from this
     // function
     return await response.send(event, context, response.SUCCESS);
-  } 
+  }
 
   // Set timer so it triggers one second before this function would timeout
   setTimeout(timeoutHandler, context.getRemainingTimeInMillis() - 1000)
@@ -83,11 +87,11 @@ A very interesting and important thing to know is that CloudFormation compares t
 by your Lambda function to the one you returned previously. If the IDs are different, CloudFormation assumes the
 resource has been replaced with a new resource. Then something interesting happens.
 
-When the resource update logic completes successfully, a Delete request is sent with the old physical resource id. 
+When the resource update logic completes successfully, a Delete request is sent with the old physical resource id.
 If the stack update fails and a rollback occurs, the new physical resource id is sent in the Delete event.
 
 If you don't want this to happen its important to use the RESOURCEID carefully.
 
-``` nodejs
+```nodejs
     await response.send(event, context, response.SUCCESS, { 'Message': 'Resource deletion successful!'}, RESOURCEID);
 ```

@@ -4,11 +4,12 @@ date: 2020-02-02
 published: true
 ---
 
-There are many way to host a static page live, and I have tried a number in the past.  There are great services
-like Netlify, a S3 bucket, or AWS Amplify.  I wanted something that cause be quickly deployed from a github repo and 
+There are many way to host a static page live, and I have tried a number in the past. There are great services
+like Netlify, a S3 bucket, or AWS Amplify. I wanted something that cause be quickly deployed from a github repo and
 ghpages had be mentioned for blog sites, plus its completely free.
 
 ### Github Pages
+
 GitHub Pages is a static site hosting service that takes HTML, CSS, and JavaScript files straight from a repository on GitHub,
 optionally runs the files through a build process, and publishes a website.
 
@@ -17,6 +18,7 @@ You can host your site on GitHub's github.io domain or your own custom domain.
 > if you haven't already, create a github project and push your code
 
 #### Configuring the GitHub Pages source branch
+
 You must select which branch will be deployed from your repository settings in GitHub for GitHub Pages to function. On GitHub:
 
 1. Navigate to your site’s repository.
@@ -25,14 +27,16 @@ You must select which branch will be deployed from your repository settings in G
 1. Click Save.
 
 #### Installing the gh-pages package
+
 The easiest way to push a Gatsby app to GitHub Pages is by using a package called gh-pages.
 
-``` shell
+```shell
 npm install gh-pages --save-dev
 ```
+
 Then add a deploy script to package.json in your repository’s codebase:
 
-``` json
+```json
 {
   "scripts": {
     "deploy": "gatsby build --prefix-paths && gh-pages -d public"
@@ -42,15 +46,15 @@ Then add a deploy script to package.json in your repository’s codebase:
 
 Assuming that github was expecting the generated 'public' folder in source control. I was wrong.
 
-Running 
+Running
 
-``` shell
+```shell
   npm run deploy
 ```
+
 created another branch called 'gh-pages' and updated the Github Pages source branch in the settings mentioned above.
 
 It great that the deploy just works; the build happens on the laptop and the public folder is uploaded to the gh-pages branch.
 The site is running at https://chrilliams.github.io/techblog/
 
 If this doesn't work, deployment information is available via environments in the github repo.
-
