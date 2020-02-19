@@ -1,0 +1,8 @@
+- name: Chris Williams
+  bio: |
+    Principal Cloud Engineer @DVLA.
+  avatar: ./avatars/chris-williams.jpeg
+  social:
+    - url: https://twitter.com/chrilliams
+    - url: https://github.com/chrilliams
+  featured: true

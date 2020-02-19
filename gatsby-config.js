@@ -1,22 +1,48 @@
 module.exports = {
-  pathPrefix: "/techblog",
   siteMetadata: {
-    title: `Technical Blog`,
-    description: `This is my coding blog where I write about my cloud journey.`,
+    title: `techblog`,
+    name: `Chris Williams`,
+    siteUrl: `https://chrilliams.co.uk`,
+    description: `techblog - blog posts of tech for me to remember`,
+    hero: {
+      heading: `It's still magic even if you know how it's done.`,
+      maxWidth: 652,
+    },
+    social: [
+      {
+        name: `twitter`,
+        url: `https://twitter.com/chrilliams`,
+      },
+      {
+        name: `github`,
+        url: `https://github.com/chrilliams`,
+      }
+    ],
   },
   plugins: [
-    `gatsby-plugin-styled-components`,
     {
-      resolve: `gatsby-plugin-mdx`,
+      resolve: "@narative/gatsby-theme-novela",
       options: {
-        extensions: [`.mdx`, `.md`],
+        contentPosts: "content/posts",
+        contentAuthors: "content/authors",
+        basePath: "/",
+        authorsPage: false,
+        sources: {
+          local: true,
+          // contentful: true,
+        },
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-plugin-manifest`,
       options: {
-        path: `${__dirname}/posts`,
-        name: `posts`,
+        name: `Novela by Narative`,
+        short_name: `Novela`,
+        start_url: `/`,
+        background_color: `#fff`,
+        theme_color: `#fff`,
+        display: `standalone`,
+        icon: `src/assets/favicon.png`,
       },
     },
   ],
