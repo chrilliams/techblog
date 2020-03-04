@@ -1,4 +1,5 @@
 import React from 'react';
+import Headings from "@narative/gatsby-theme-novela/src/components/Headings";
 
 /**
  * Paste in your SVG logo and return it from this component.
@@ -9,8 +10,7 @@ import React from 'react';
  */
 export default function Logo({ fill }) {
   return (
-    <svg>
-  <text x="0" y="30" fill="black">techblog</text>
-</svg>
+    <Headings.h2>techblog</Headings.h2>
+
   );
 }
