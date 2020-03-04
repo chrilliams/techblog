@@ -10,11 +10,11 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@narative/gatsby-theme-novela": "^0.*",
-    "gatsby": "^2.13.41",
-    "gatsby-plugin-manifest": "^2.2.4",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "@narative/gatsby-theme-novela": "0.13.3",
+    "gatsby": "^2.19.28",
+    "gatsby-plugin-manifest": "^2.2.42",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
   },
   "devDependencies": {
     "gh-pages": "^2.2.0"
