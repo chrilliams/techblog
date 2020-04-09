@@ -1,0 +1,48 @@
+---
+title: serverless webpack
+author: Chris Williams
+date: 2020-04-07
+hero: ./images/StockSnap_QDDPZH3YSO.jpg
+excerpt: Using Webpack with the serverless framework
+---
+
+Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is
+also capable of transforming, bundling, or packaging just about any resource or asset.
+
+It also turns out its great when used with serverless and the Serverless framework for many reasons
+[Just how expensive is the full AWS SDK? - Yan Cui](https://theburningmonk.com/2019/03/just-how-expensive-is-the-full-aws-sdk/)
+
+### What setup is required?
+
+Install the serverless-webpack and the webpack npm modules as dev dependencies:
+
+```js
+npm i -D serverless-webpack webpack
+```
+
+Add the plugin to the ```serverless.yaml```
+
+```js
+plugins:
+  - serverless-webpack
+```
+
+Lastly, add a ```webpack.config.js``` in the root of your serverless project
+
+```js
+const slsw = require('serverless-webpack');
+const webpack = require('webpack');
+
+module.exports = {
+    entry: slsw.lib.entries,
+    mode: slsw.lib.webpack.isLocal ? "development" : "production",
+};
+```
+
+**entry: slsw.lib.entries** - plugin determines the correct handler entry points at build time
+**mode: slsw.lib.webpack.isLocal ? "development" : "production"** - lib.webpack.isLocal is a boolean
+property that is set to true, if any known mechanism is used in the current Serverless invocation that runs code
+locally.
+This allows to set properties in the webpack configuration differently depending if the lambda code is run on the local machine or deployed.
+
+Huge benefits for very little effort.
