@@ -1,0 +1,16 @@
+---
+title: Why Lambda destinations are cool
+author: Chris Williams
+date: 2020-03-10
+hero: ./images/lambda-destinations.png
+excerpt: Using destinations as a deadletter queue for Lambda
+---
+
+So after an hour of trying to get destinations working for Lambda functions being triggered from SQS, it seems its not supported and I should have
+looked more clearfully at the blog posted by AWS [Introducing AWS Lambda Destinations](https://aws.amazon.com/blogs/compute/introducing-aws-lambda-destinations/).
+
+There doesn't seem to be a clear reason for this, so I am completely guessing that because destinations only support asynchronous invocation and SQS
+polls for new messages??  Behind the scenes AWS has a Lambda function polling SQS which then triggers your lambda function, which is why it seems event based.
+
+[the code](https://github.com/chrilliams/lambda-destinations)
+
