@@ -48,9 +48,9 @@ const handler = async function(event, context) {
     console.log('CREATE!')
     // Put your custom create logic here
     await response.send(event, context, response.SUCCESS, { 'Message': 'Resource creation successful!' });
-
+    
   } else if (event.RequestType === 'Update') {
-    console.log('UDPATE!')
+    console.log('UDDATE!')
     // Put your custom update logic here
     await response.send(event, context, response.SUCCESS, { 'Message': 'Resource update successful!' });
 
@@ -61,14 +61,14 @@ const handler = async function(event, context) {
 
   } else {
     console.log('FAILED!')
-    await response.send(event, context, response.FAILED);
+    await response.send(event, context, response.FAILED, { 'Message': 'Resource request type not known!'});
   }
   return await response.send(event, context, response.SUCCESS);
 
 };
 
 function setupWatchdogTimer (event, context) {
-  const timeoutHandler = () => {
+  const timeoutHandler = async () => {
     console.log('Timeout FAILURE!')
     // Emit event to 'sendResponse', then callback with an error from this
     // function
