@@ -1,0 +1,46 @@
+---
+title: Automating ACM requests
+author: Chris Williams
+date: 2020-04-07
+hero: ./images/StockSnap_QDDPZH3YSO.jpg
+excerpt: Fully automating Certificate Validatation for ACM
+---
+
+Have a CloudFormation stack create everything you need is a great thing.  It means other can start working
+on your product quickly and I find is also easier for me to maintain.
+
+Before the Amazon certificate authority (CA) can issue a certificate for your site, AWS Certificate Manager (ACM) must verify
+that you own or control all of the domain names that you specified in your request.  This isn't supported by cloudformation alone,
+so we will have to use a Lambda to create the DNS record for validation.
+
+**Option 1: Custom Resource**
+
+This is my 'goto' method when CloudFormation is missing that little bit of functionality.
+Similar to this post https://www.callumpember.com/Validate-an-ACM-cert-with-CloudFormation/
+A custom resource LambdaFunction polls the CloudFormation stack waiting for the ACM Certificate
+resource to output an event with the DNS validation record details.
+This information is then used to create the required DNS record for validation.
+
+
+**Option 2: Cloud Trail. Doesn't work**
+
+Another option is to trigger creating the certificate verification process from CloudTrail, but unfortunately there isn't a
+way to get the content for the dns record
+
+```yaml
+    events:
+      # http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html#console_event_type
+      - cloudwatchEvent:
+          event:
+            source:
+            - aws.acm
+            detail-type:
+            - AWS API Call via CloudTrail
+            detail:
+              eventSource:
+              - acm.amazonaws.com
+              eventName:
+              - RequestCertificate
+```
+
+
