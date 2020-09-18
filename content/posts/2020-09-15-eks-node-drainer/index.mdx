@@ -1,0 +1,43 @@
+---
+title: EKS safe node draining
+author: Chris Williams
+date: 2020-09-15
+hero: ./images/pikrepo.com.jpg
+excerpt: Draining self managed EKS nodes on AutoScaling events for cloudformation updates
+---
+
+AWS EKS is a managed service provided by AWS to help run Kubernetes without worrying about 
+the underlying infrastructure.
+
+If you are running Kubernetes and using AWS you are probably using EKS or if not you should be looking about
+migrating workloads.
+
+One of the long await features of 2019 re:invent was [managed node groups](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html), infact it was announced pre re:invent.
+With Amazon EKS managed node groups, you don’t need to separately provision or register the Amazon EC2 instances that provide compute capacity to run your Kubernetes applications. You can create, update, or terminate nodes for your cluster with a single operation. Nodes run using the latest Amazon EKS optimized AMIs in your AWS account while node updates and terminations gracefully drain nodes to ensure that your applications stay available.
+
+This sounds great, but one of the features that I'm still waiting for is to make use of spot instances. The offer up to 70% savings on normal on-demand instances, and are perfect when using cluster autoscaler to scale out and in depending on kubernetese memory/cpu requests.  [Launch templates and custom AMI](https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html) support was announced August 2020, but unfortunately no support for stop instance.
+
+This still means we continue to manage our own worker nodes with Cloudformation and continue to managed upgrades of the nodes ourselves.  
+
+> when upgrading worker nodes, pods are NOT drained safely
+
+I have written a Lambda function that listens to EventBridge to safely drain a node following the [Kubernetes recommendations](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).  Source code is available [here](https://github.com/chrilliams/eks-node-drainer)
+You will need to add this to your [role configmap](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html).
+```yaml
+    - rolearn: arn:aws:iam::<account-number>:role/EKSNodeDrainerExecutionRole
+      username: <username>
+      groups:
+        - system:masters
+```
+
+Also, add a lifecycle event to your EKS cloudformation stack
+```yaml
+  LCH:
+    Type: AWS::AutoScaling::LifecycleHook
+    Properties:
+      AutoScalingGroupName: !Ref NodeGroup
+      HeartbeatTimeout: 600
+      DefaultResult: CONTINUE
+      LifecycleHookName: !Sub "${NodeGroupName}-LCH"
+      LifecycleTransition: autoscaling:EC2_INSTANCE_TERMINATING
+```
