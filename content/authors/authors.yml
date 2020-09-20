@@ -1,6 +1,10 @@
 - name: Chris Williams
   bio: |
-    Principal Cloud Engineer @DVLA.
+    Principal Cloud Engineer @DVLA.  <br/>
+    AWS Certified Architech Professional.  I spend most of my time learning and playing with AWS. 
+    <br/><br/> Spoken on Yan Cui's <a href="https://realworldserverless.com/">Real World Serverless Episode #9</a>
+    <br/>
+    and digileaders - <a href="https://week.digileaders.com/talks/cloud-adoption-at-dvla-successes-snares-and-pitfalls/">Cloud adoption at DVLA - successes, snares and pitfalls</a>
   avatar: ./avatars/chris-williams.jpeg
   social:
     - url: https://twitter.com/chrilliams
